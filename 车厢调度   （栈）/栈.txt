@@ -1,0 +1,70 @@
+#include<iostream>
+
+using namespace std;
+
+#define STACK_INIT_SIZE 100
+#define stackincrement 10
+#define SEAT_LENGTH 80
+
+typedef struct {
+	char *base;
+	char *top;
+	int stacksize;
+}SqStack;
+ void initStack(SqStack &S)
+ {
+	 S.base=(char*) malloc(STACK_INIT_SIZE * sizeof(char));
+	 if(!S.base) exit(OVERFLOW);
+	 S.base=S.top;
+	 S.stacksize=STACK_INIT_SIZE;
+ }
+char Push(SqStack &S,char &e)
+ {
+	 if(S.top-S.base>=S.stacksize)
+	 {
+		 S.base=(char*)realloc(S.base,(S.stacksize+STACK_INIT_SIZE)*sizeof(char));
+		 if(!S.base) exit(OVERFLOW);
+		 S.top=S.base+S.stacksize;
+		 S.stacksize+=STACK_INIT_SIZE;
+	 }
+	 *S.top++=e;
+	 return 0;
+ }
+char Pop(SqStack &S,char &e)
+ {
+	 if(S.top==S.base)return 1;
+	 e=*--S.top;
+	 return 0;
+ }
+ int main()
+ {
+	 SqStack L;
+	 initStack(L);
+     char Seat_category[5];
+	 cout<<"Please use H or S to enter the Seat category:";
+     cout<<endl;
+	 cin>>Seat_category;
+	 int i=0 ,j=0,k=0;
+	 while(Seat_category[i])
+	 {
+		 if(Seat_category[i]=='S')
+		 { 
+              Seat_category[j]=Seat_category[i]; 
+			  j++;
+		 }
+		 else Push(L,Seat_category[i]);
+		 i++;
+	 }
+	 while(Seat_category[j])
+	 { 
+      Push(L,Seat_category[j]);
+		  j++;
+	 }
+	  while(Seat_category[k])
+	 { 
+      Pop(L,Seat_category[k]);            
+		  k++;
+	 }
+	 cout<<Seat_category[1]<<endl;
+	 return 0;
+ }
